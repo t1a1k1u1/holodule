@@ -46,31 +46,40 @@ exports.getSchedule = functions.region('asia-northeast1').https.onRequest((req, 
       reply ? reply.full_text.split(/\r\n|\n/) : []
     );
 
+    const reDay  = /本日.+(\d)\/(\d)/;
     const reTime = /^(\d{2}):(\d{2})/;
     const reName = /アキロゼ|さくらみこ|紫咲シオン|赤井はあと|湊あくあ|ときのそら|白上フブキ|ロボ子さん|百鬼あやめ|大空スバル|大神ミオ|夏色まつり|癒月ちょこ|夜空メル|猫又おかゆ|戌神ころね/g;
 
     let currentTime;
+    let day;
     let schedule = [];
     _.forEach(holoduleTweetWithReply, (line) => {
       const matched = {
-        time: line.match(reTime),
+        day:   line.match(reDay),
+        time:  line.match(reTime),
         names: line.match(reName),
       };
 
-      if (matched.time) {
-        if ('24' < matched.time[1]) {
-          matched.time[1] = ('0' + (Number(matched.time[1]) -24)).slice(-2);
-          currentTime = moment(`${matched.time[1]}:${matched.time[2]}`, 'HH:mm:ss').add(1, 'd');
-        } else {
-          currentTime = moment(matched.time[0], 'HH:mm:ss');
-        }
+      if (matched.day) {
+        day = `${matched.day[1]}/${matched.day[2]}`;
       }
 
-      if (matched.names) {
-        schedule.push({
-          time: currentTime,
-          names: matched.names,
-        });
+      if (day) {
+        if (matched.time) {
+          if ('24' < matched.time[1]) {
+            matched.time[1] = `${(Number(matched.time[1]) -24)}`;
+            currentTime = moment(`${day} ${matched.time[1]}:${matched.time[2]}`, 'MM/DD HH:mm').add(1, 'd');
+          } else {
+            currentTime = moment(`${day} ${matched.time[0]}`, 'MM/DD HH:mm');
+          }
+        }
+
+        if (matched.names) {
+          schedule.push({
+            time: currentTime,
+            names: matched.names,
+          });
+        }
       }
     });
 
