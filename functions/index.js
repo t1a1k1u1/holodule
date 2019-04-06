@@ -47,7 +47,7 @@ exports.getSchedule = functions.region('asia-northeast1').https.onRequest((req, 
     );
 
     const reTime = /^(\d{2}):(\d{2})/;
-    const reName = /アキロゼ|さくらみこ|紫咲シオン|赤井はあと|湊あくあ|ときのそら|白上フブキ|ロボ子さん|百鬼あやめ|大空スバル|大神ミオ|夏色まつり|癒月ちょこ|夜空メル/g;
+    const reName = /アキロゼ|さくらみこ|紫咲シオン|赤井はあと|湊あくあ|ときのそら|白上フブキ|ロボ子さん|百鬼あやめ|大空スバル|大神ミオ|夏色まつり|癒月ちょこ|夜空メル|猫又おかゆ|戌神ころね/g;
 
     let currentTime;
     let schedule = [];
