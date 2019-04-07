@@ -13,15 +13,15 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 class ScheduleState {
-  public schedules: object[] = [];
+  public schedule: object[] = [];
 }
 
 class ScheduleGetters extends Getters<ScheduleState> {
 }
 
 class ScheduleMutations extends Mutations<ScheduleState> {
-  setSchedules(data: object[]) {
-    this.state.schedules = data;
+  setSchedule(data: object[]) {
+    this.state.schedule = data;
   }
 }
 
@@ -31,13 +31,13 @@ class ScheduleActions extends Actions<
   ScheduleMutations,
   ScheduleActions
 > {
-  private fetchSchedules(): void {
-    db.collection('schedules').orderBy('start_at').get().then((querySnapshot) => {
+  private fetchSchedule(): void {
+    db.collection('schedules').where('start_at', '>=', new Date()).orderBy('start_at').get().then((querySnapshot) => {
       const docData: object[] = [];
       querySnapshot.forEach((doc) => {
         docData.push(doc.data());
       });
-      this.commit('setSchedules', docData);
+      this.commit('setSchedule', docData);
     });
   }
 }
