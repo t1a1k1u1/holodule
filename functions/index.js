@@ -46,8 +46,8 @@ exports.getSchedule = functions.region('asia-northeast1').https.onRequest((req, 
       reply ? reply.full_text.split(/\r\n|\n/) : []
     );
 
-    const reDay  = /本日.+(\d)\/(\d)/;
-    const reTime = /^(\d{2}):(\d{2})/;
+    const reDay  = /本日.+(\d{1,2})\/(\d{1,2})/;
+    const reTime = /^(\d{1,2}):(\d{1,2})/;
     const reName = /アキロゼ|さくらみこ|紫咲シオン|赤井はあと|湊あくあ|ときのそら|白上フブキ|ロボ子さん|百鬼あやめ|大空スバル|大神ミオ|夏色まつり|癒月ちょこ|夜空メル|猫又おかゆ|戌神ころね/g;
 
     let currentTime;
