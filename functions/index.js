@@ -66,7 +66,7 @@ exports.getSchedule = functions.region('asia-northeast1').https.onRequest((req, 
 
       if (day) {
         if (matched.time) {
-          if ('24' < matched.time[1]) {
+          if (24 < Number(matched.time[1])) {
             matched.time[1] = `${(Number(matched.time[1]) -24)}`;
             currentTime = moment(`${day} ${matched.time[1]}:${matched.time[2]}`, 'MM/DD HH:mm').add(1, 'd');
           } else {
