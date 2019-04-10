@@ -1,6 +1,7 @@
 import { Getters, Mutations, Actions, Module } from 'vuex-smart-module';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import * as moment from 'moment';
 
 firebase.initializeApp({
   apiKey:            process.env.VUE_APP_FIREBASE_API_KEY,
@@ -31,8 +32,8 @@ class ScheduleActions extends Actions<
   ScheduleMutations,
   ScheduleActions
 > {
-  private fetchSchedule(): void {
-    db.collection('schedules').where('start_at', '>=', new Date()).orderBy('start_at').get().then((querySnapshot) => {
+  private fetchSchedule(time: moment.Moment): void {
+    db.collection('schedules').where('start_at', '>=', time.toDate()).orderBy('start_at').get().then((querySnapshot) => {
       const docData: object[] = [];
       querySnapshot.forEach((doc) => {
         docData.push(doc.data());
