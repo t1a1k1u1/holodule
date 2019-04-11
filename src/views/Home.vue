@@ -5,7 +5,9 @@
       <div class="live-list">
         <div class="live" v-for="(live, index) in line.lives" :key="index" :style="bgColor(live.channels)">
           <div class="time">{{ toTimeStr(live.start_at.seconds) }} ~</div>
-          <div class="channel" v-for="(channel, index) in live.channels" :key="index">{{ channel }}</div>
+          <div class="channel-list">
+            <div class="channel" v-for="(channel, index) in live.channels" :key="index">{{ channel }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -129,10 +131,14 @@ export default class Home extends Vue {
         padding: 2px 8px;
       }
 
-      .channel {
+      .channel-list {
         display: inline-block;
         position: absolute;
         bottom: 0;
+
+        .channel {
+          display: inline-block;
+        }
       }
     }
   }
