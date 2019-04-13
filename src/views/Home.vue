@@ -106,7 +106,7 @@ export default class Home extends Vue {
     border-radius: 8px;
     margin: 0 0 16px;
     padding: 8px 0;
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .section-time {
