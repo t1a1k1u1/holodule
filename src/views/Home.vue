@@ -103,7 +103,10 @@ export default class Home extends Vue {
   .section-date {
     display: block;
     background-color: aliceblue;
-    margin: 8px 0;
+    border-radius: 8px;
+    margin: 0 0 16px;
+    padding: 8px 0;
+    font-size: 24px;
   }
 
   .section-time {
