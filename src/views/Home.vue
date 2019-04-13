@@ -6,7 +6,9 @@
         <div class="live" v-for="(live, index) in line.lives" :key="index" :style="bgColor(live.channels)">
           <div class="time">{{ toTimeStr(live.start_at.seconds) }} ~</div>
           <div class="channel-list">
-            <div class="channel" v-for="(channel, index) in live.channels" :key="index">{{ channel }}</div>
+            <div class="channel" v-for="(channel, index) in live.channels" :key="index">
+              <img class="channel-image" :src="channelImage(channel)">
+            </div>
           </div>
         </div>
       </div>
@@ -15,6 +17,7 @@
 </template>
 
 <script lang="ts">
+import { toEnglish, toBackgroundColor } from '@/utils/channelTheme';
 import { Component, Vue } from 'vue-property-decorator';
 import { map, filter } from 'lodash';
 import * as Moment from 'moment';
@@ -22,7 +25,7 @@ const moment = require('moment');
 
 interface Schedule {
   start_at: any,
-  channels: object[],
+  channels: object[]
 }
 
 @Component({
@@ -51,7 +54,7 @@ export default class Home extends Vue {
   get timeLine(): object[] {
     return map(this.times, (time) => {
       return {
-        time: time,
+        time,
         lives: filter(this.schedule, (live) => {
           return (time.unix() <= live.start_at.seconds)
             && (live.start_at.seconds < time.clone().add(1, 'hour').unix());
@@ -60,38 +63,25 @@ export default class Home extends Vue {
     });
   }
 
-  toDateTimeStr(time: Moment.Moment): string {
+  private toDateTimeStr(time: Moment.Moment): string {
     return time.format('MM/DD HH:mm');
   }
 
-  toTimeStr(time: string): string {
+  private toTimeStr(time: string): string {
     return moment.unix(time).format('HH:mm');
   }
 
-  bgColor(channels: string[]): object {
+  private bgColor(channels: string[]): object {
     if (channels.length !== 1) {
       return { backgroundColor: '#F0F8FF' };
     } else {
-      switch (channels[0]) {
-        case '赤井はあと': return { backgroundColor: '#FF6347' }; // tomato
-        case 'アキロゼ':   return { backgroundColor: '#87CEFA' }; // lightskyblue
-        case '戌神ころね': return { backgroundColor: '#F0E68C' }; // khaki
-        case '大神ミオ':   return { backgroundColor: '#32CD32' }; // limegreen
-        case '大空スバル': return { backgroundColor: '#ADFF2F' }; // greenyellow
-        case 'さくらみこ': return { backgroundColor: '#F08080' }; // lightcoral
-        case '白上フブキ': return { backgroundColor: '#C0C0C0' }; // silver
-        case 'ときのそら': return { backgroundColor: '#4169E1' }; // royalblue
-        case '百鬼あやめ': return { backgroundColor: '#FF7F50' }; // coral
-        case '夏色まつり': return { backgroundColor: '#FFA500' }; // orange
-        case '猫又おかゆ': return { backgroundColor: '#E6E6FA' }; // lavender
-        case '湊あくあ':   return { backgroundColor: '#EE82EE' }; // violet
-        case '紫咲シオン': return { backgroundColor: '#9932CC' }; // darkorchid
-        case '癒月ちょこ': return { backgroundColor: '#FF69B4' }; // hotpink
-        case '夜空メル':   return { backgroundColor: '#FFD700' }; // gold
-        case 'ロボ子さん': return { backgroundColor: '#808080' }; // gray
-        default: return { backgroundColor: '#F0F8FF' };
-      }
+      return toBackgroundColor(channels[0]);
     }
+  }
+
+  private channelImage(channel: string): string {
+    const channelEn = toEnglish(channel);
+    return require(`@/assets/${ channelEn }.png`);
   }
 }
 </script>
@@ -132,12 +122,17 @@ export default class Home extends Vue {
       }
 
       .channel-list {
-        display: inline-block;
-        position: absolute;
-        bottom: 0;
+        display: flex;
+        justify-content: center;
+        height: inherit;
 
         .channel {
           display: inline-block;
+          height: inherit;
+
+          .channel-image {
+            height: inherit;
+          }
         }
       }
     }
