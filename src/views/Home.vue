@@ -98,8 +98,11 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.time-section {
+.home {
+  margin-top: 64px;
+}
 
+.time-section {
   .section-date {
     display: block;
     background-color: aliceblue;
