@@ -26,14 +26,14 @@ import * as Moment from 'moment';
 const moment = require('moment');
 
 interface Schedule {
-  start_at: any,
-  channels: object[]
+  start_at: any;
+  channels: object[];
 }
 
 interface Channel {
-  nameJa: string,
-  nameEn: string,
-  color: string,
+  nameJa: string;
+  nameEn: string;
+  color: string;
 }
 
 @Component({

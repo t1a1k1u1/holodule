@@ -35,13 +35,17 @@ class ScheduleActions extends Actions<
   ScheduleActions
 > {
   private fetchSchedule(time: moment.Moment): void {
-    db.collection('schedules').where('start_at', '>=', time.toDate()).orderBy('start_at').get().then((querySnapshot) => {
-      const docData: object[] = [];
-      querySnapshot.forEach((doc) => {
-        docData.push(doc.data());
+    db.collection('schedules')
+      .where('start_at', '>=', time.toDate())
+      .orderBy('start_at')
+      .get()
+        .then((querySnapshot) => {
+        const docData: object[] = [];
+        querySnapshot.forEach((doc) => {
+          docData.push(doc.data());
+        });
+        this.commit('setSchedule', docData);
       });
-      this.commit('setSchedule', docData);
-    });
   }
 }
 
