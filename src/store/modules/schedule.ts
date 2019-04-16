@@ -2,6 +2,7 @@ import { Getters, Mutations, Actions, Module } from 'vuex-smart-module';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import * as moment from 'moment';
+import channels from '@/config/channel.json';
 
 firebase.initializeApp({
   apiKey:            process.env.VUE_APP_FIREBASE_API_KEY,
@@ -15,6 +16,7 @@ const db = firebase.firestore();
 
 class ScheduleState {
   public schedule: object[] = [];
+  public channels: object[] = channels;
 }
 
 class ScheduleGetters extends Getters<ScheduleState> {

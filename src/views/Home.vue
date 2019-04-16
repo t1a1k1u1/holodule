@@ -20,15 +20,20 @@
 </template>
 
 <script lang="ts">
-import { toEnglish, toBackgroundColor } from '@/utils/channelTheme';
 import { Component, Vue } from 'vue-property-decorator';
-import { map, filter } from 'lodash';
+import { map, find, filter } from 'lodash';
 import * as Moment from 'moment';
 const moment = require('moment');
 
 interface Schedule {
   start_at: any,
   channels: object[]
+}
+
+interface Channel {
+  nameJa: string,
+  nameEn: string,
+  color: string,
 }
 
 @Component({
@@ -41,6 +46,10 @@ export default class Home extends Vue {
   private created(): void {
     this.now = moment();
     this.$store.dispatch('fetchSchedule', this.now.clone().subtract(1, 'hour'));
+  }
+
+  get channels(): Channel[] {
+    return this.$store.state.channels;
   }
 
   get schedule(): Schedule[] {
@@ -83,16 +92,21 @@ export default class Home extends Vue {
   }
 
   private bgColor(channels: string[]): object {
-    if (channels.length !== 1) {
+    const channel = find(this.channels, {nameJa: channels[0]});
+    if (!channel) {
       return { backgroundColor: '#F0F8FF' };
     } else {
-      return toBackgroundColor(channels[0]);
+      return { backgroundColor: channel.color };
     }
   }
 
-  private channelImage(channel: string): string {
-    const channelEn = toEnglish(channel);
-    return require(`@/assets/${ channelEn }.png`);
+  private channelImage(nameJa: string): string {
+    const channel = find(this.channels, {nameJa});
+    if (!channel) {
+      return require('@/assets/aqua.png');
+    } else {
+      return require(`@/assets/${ channel.nameEn }.png`);
+    }
   }
 }
 </script>
@@ -105,9 +119,9 @@ export default class Home extends Vue {
 .time-section {
   .section-date {
     display: block;
-    background-color: aliceblue;
+    background-color: gainsboro;
     border-radius: 8px;
-    margin: 0 0 16px;
+    margin: 16px 0;
     padding: 8px 0;
     font-size: 20px;
   }
