@@ -174,6 +174,7 @@ export default class Home extends Vue {
 
             .channel-image {
               height: inherit;
+              width: auto;
             }
           }
         }
