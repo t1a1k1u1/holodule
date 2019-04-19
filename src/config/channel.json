@@ -2,81 +2,97 @@
     {
         "nameJa": "赤井はあと",
         "nameEn": "haato",
-        "color": "#FF6347"
+        "color": "#FF6347",
+        "mark": "❣"
     },
     {
         "nameJa": "アキロゼ",
         "nameEn": "aki",
-        "color": "#87CEFA"
+        "color": "#87CEFA",
+        "mark": "🍎"
     },
     {
         "nameJa": "戌神ころね",
         "nameEn": "korone",
-        "color": "#F0E68C"
+        "color": "#F0E68C",
+        "mark": "🥐"
     },
     {
         "nameJa": "大神ミオ",
         "nameEn": "mio",
-        "color": "#32CD32"
+        "color": "#32CD32",
+        "mark": "🌲"
     },
     {
         "nameJa": "大空スバル",
         "nameEn": "subaru",
-        "color": "#ADFF2F"
+        "color": "#ADFF2F",
+        "mark": "🚑"
     },
     {
         "nameJa": "さくらみこ",
         "nameEn": "miko",
-        "color": "#F08080"
+        "color": "#F08080",
+        "mark": "🌸"
     },
     {
         "nameJa": "白上フブキ",
         "nameEn": "fubuki",
-        "color": "#C0C0C0"
+        "color": "#C0C0C0",
+        "mark": "🌽"
     },
     {
         "nameJa": "ときのそら",
         "nameEn": "sora",
-        "color": "#4169E1"
+        "color": "#4169E1",
+        "mark": "🐻"
     },
     {
         "nameJa": "百鬼あやめ",
         "nameEn": "ayame",
-        "color": "#FF7F50"
+        "color": "#FF7F50",
+        "mark": "👿"
     },
     {
         "nameJa": "夏色まつり",
         "nameEn": "matsuri",
-        "color": "#FFA500"
+        "color": "#FFA500",
+        "mark": "🏮"
     },
     {
         "nameJa": "猫又おかゆ",
         "nameEn": "okayu",
-        "color": "#E6E6FA"
+        "color": "#E6E6FA",
+        "mark": "🍙"
     },
     {
         "nameJa": "湊あくあ",
         "nameEn": "aqua",
-        "color": "#EE82EE"
+        "color": "#EE82EE",
+        "mark": "⚓"
     },
     {
         "nameJa": "紫咲シオン",
         "nameEn": "sion",
-        "color": "#9932CC"
+        "color": "#9932CC",
+        "mark": "🌙"
     },
     {
         "nameJa": "癒月ちょこ",
         "nameEn": "choco",
-        "color": "#FF69B4"
+        "color": "#FF69B4",
+        "mark": "💋"
     },
     {
         "nameJa": "夜空メル",
         "nameEn": "melu",
-        "color": "#FFD700"
+        "color": "#FFD700",
+        "mark": "🌟"
     },
     {
         "nameJa": "ロボ子さん",
         "nameEn": "robo",
-        "color": "#808080"
+        "color": "#808080",
+        "mark": "🤖"
     }
 ]

@@ -1,7 +1,7 @@
 import { Getters, Mutations, Actions, Module } from 'vuex-smart-module';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import * as moment from 'moment';
+import { Moment } from 'moment';
 import channels from '@/config/channel.json';
 
 firebase.initializeApp({
@@ -34,7 +34,7 @@ class ScheduleActions extends Actions<
   ScheduleMutations,
   ScheduleActions
 > {
-  private fetchSchedule(time: moment.Moment): void {
+  private fetchSchedule(time: Moment): void {
     db.collection('schedules')
       .where('start_at', '>=', time.toDate())
       .orderBy('start_at')
