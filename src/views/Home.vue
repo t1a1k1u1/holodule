@@ -119,7 +119,7 @@ export default class Home extends Vue {
 
   .time {
     display: flex;
-    height: 100px;
+    min-height: 100px;
 
     .at {
       display: block;

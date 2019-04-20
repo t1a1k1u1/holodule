@@ -1,6 +1,8 @@
 <template>
   <div class="card" :style="cardColor">
-    <div class="time">{{ timeStr }}</div>
+    <div class="time">
+      <span>{{ timeStr }} ~</span>
+    </div>
     <div class="channel-list">
       <div
         class="channel"
@@ -43,19 +45,22 @@ export default class EventCard extends Vue {
   margin: 0 2px;
 
   .time {
-    position: absolute;
-    background: rgba(white, 0.5);
-    border-radius: 8px;
-    margin: 4px;
-    padding: 0 4px;
-    font-size: 12px;
+    text-align: left;
+
+    >span {
+      border-radius: 8px;
+      background-color: rgba(white, 0.5);
+      padding: 0 4px;
+      margin: 0 4px;
+      font-size: 12px;
+    }
   }
 
   .channel-list {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    height: 100%;
 
     .channel {
       display: flex;
@@ -63,7 +68,7 @@ export default class EventCard extends Vue {
       align-items: center;
       background-color: rgba(white, 0.5);
       border-radius: 32px;
-      margin: 2px;
+      margin: 4px;
       width: 64px;
       height: 64px;
 
