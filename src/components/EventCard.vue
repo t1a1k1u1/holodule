@@ -1,12 +1,15 @@
 <template>
   <div class="card" :style="cardColor">
     <div class="time">{{ timeStr }}</div>
-    <div
-      class="channel"
-      v-for="channel in channels"
-      :key="channel.nameEn"
-    >
-      {{ channel.nameJa }}{{ channel.mark }}
+    <div class="channel-list">
+      <div
+        class="channel"
+        v-for="channel in channels"
+        :key="channel.nameEn"
+      >
+        <div class="mark">{{ channel.mark }}</div>
+        <div class="label">{{ channel.nameJa }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +49,37 @@ export default class EventCard extends Vue {
     margin: 4px;
     padding: 0 4px;
     font-size: 12px;
+  }
+
+  .channel-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    .channel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(white, 0.5);
+      border-radius: 32px;
+      margin: 2px;
+      width: 64px;
+      height: 64px;
+
+      .mark {
+        position: absolute;
+        font-size: 40px;
+        opacity: 0.2;
+        filter: grayscale(100%);
+      }
+
+      .label {
+        position: absolute;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
   }
 }
 </style>

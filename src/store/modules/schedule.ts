@@ -23,7 +23,7 @@ class ScheduleGetters extends Getters<ScheduleState> {
 }
 
 class ScheduleMutations extends Mutations<ScheduleState> {
-  setSchedule(data: object[]) {
+  public setSchedule(data: object[]) {
     this.state.schedule = data;
   }
 }
