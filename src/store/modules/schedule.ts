@@ -35,7 +35,7 @@ class ScheduleActions extends Actions<
   ScheduleActions
 > {
   private fetchSchedule(time: Moment): void {
-    db.collection('schedules')
+    db.collection('event')
       .where('start_at', '>=', time.toDate())
       .orderBy('start_at')
       .get()
