@@ -30,7 +30,7 @@ function getHoloduleTweet(tweets) {
 
   return {
     id_str: holoduleTweet.id_str,
-    text  : _.join([holoduleTweet.full_text, reply.full_text], '\n'),
+    text  : reply ? _.join([holoduleTweet.full_text, reply.full_text], '\n') : holoduleTweet.full_text
   };
 }
 
