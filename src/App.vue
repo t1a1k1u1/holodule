@@ -1,32 +1,31 @@
 <template>
   <div id="app">
-    <div class="nav">ほろじゅーる！</div>
+    <head>
+      <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+    </head>
+    <v-toolbar class="white--text" fixed color="blue">
+      <v-toolbar-title>ほろじゅーる！</v-toolbar-title>
+    </v-toolbar>
+
     <router-view/>
   </div>
 </template>
 
-<style lang="scss">
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 
-.nav {
-  display: flex;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: royalblue;
-  color: white;
-  font-size: 20px;
-  width: 100%;
-  height: 48px;
-  padding: 0 8px;
-  z-index: 1;
+@Component({
+})
+export default class App extends Vue {
 }
+</script>
 
+<style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+  margin-top: 64px;
 }
 </style>

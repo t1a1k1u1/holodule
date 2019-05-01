@@ -1,19 +1,19 @@
 <template>
-  <div class="card" :style="cardColor">
-    <div class="time">
-      <span>{{ timeStr }} ~</span>
-    </div>
-    <div class="channel-list">
-      <div
-        class="channel"
-        v-for="channel in channels"
-        :key="channel.nameEn"
-      >
-        <div class="mark">{{ channel.mark }}</div>
-        <div class="label">{{ channel.nameJa }}</div>
-      </div>
-    </div>
-  </div>
+  <v-layout
+    class="card-event"
+    row
+    align-end
+    justify-center
+    :style="cardColor"
+  >
+    <span class="time caption">{{ timeStr }} ~ </span>
+    <img
+      class="img"
+      v-for="channel in channels"
+      :key="channel.nameEn"
+      :src="channelImg(channel)"
+    />
+  </v-layout>
 </template>
 
 <script lang="ts">
@@ -34,57 +34,36 @@ export default class EventCard extends Vue {
   get cardColor(): object {
     return {backgroundColor: this.channels[0].color};
   }
+
+  private channelImg(channel: Channel): string {
+    return require(`@/assets/${channel.nameEn}.png`);
+  }
+
+  private clickChannel(channel: Channel): void {
+    this.$emit('clickChannel', channel);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.card {
-  flex-grow: 1;
-  align-self: stretch;
-  border-radius: 8px;
-  margin: 0 2px;
+.card-event {
+  position: relative;
+  border-radius: 4px;
+  min-height: 64px;
+  margin: 4px;
 
   .time {
-    text-align: left;
-
-    >span {
-      border-radius: 8px;
-      background-color: rgba(white, 0.5);
-      padding: 0 4px;
-      margin: 0 4px;
-      font-size: 12px;
-    }
+    position: absolute;
+    background-color: rgba(white, 0.5);
+    border-radius: 4px;
+    padding: 0 4px;
+    top: 2px;
+    left: 2px;
   }
 
-  .channel-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
-    .channel {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: rgba(white, 0.5);
-      border-radius: 32px;
-      margin: 4px;
-      width: 64px;
-      height: 64px;
-
-      .mark {
-        position: absolute;
-        font-size: 40px;
-        opacity: 0.2;
-        filter: grayscale(100%);
-      }
-
-      .label {
-        position: absolute;
-        font-size: 12px;
-        font-weight: bold;
-      }
-    }
+  .img {
+    width: 64px;
+    height: 64px;
   }
 }
 </style>

@@ -1,24 +1,24 @@
 <template>
-  <div class="home">
-    <div class="section" v-for="(section, index) in timeLine" :key="index">
-      <div class="date" v-if="index === 0 || isStartOfDay(section.time)">
-        {{ toDateStr(section.time) }}
+  <v-container fluid>
+    <v-layout column v-for="(section, index) in timeLine" :key="index">
+      <div class="card-date text-xs-center" v-if="index === 0 || isStartOfDay(section.time)">
+        <span class="title">{{ toDateStr(section.time) }}</span>
       </div>
-      <div class="time">
-        <div class="at">
-          {{ toTimeStr(section.time) }}
-        </div>
-        <div class="event-list">
+      <div class="section">
+        <span>{{ toTimeStr(section.time) }}</span>
+        <v-divider></v-divider>
+        <v-layout row>
           <event-card
             v-for     = "(event, index) in section.events"
             :key      = "index"
             :timeStr  = "toTimeStr(event.startAt)"
             :channels = "event.channels"
+            @clickChannel = "clickChannel"
           />
-        </div>
+        </v-layout>
       </div>
-    </div>
-  </div>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -46,10 +46,12 @@ interface Channel {
   },
 })
 export default class Home extends Vue {
-  private now: Moment = moment();
+  private now!: Moment;
+  private visibleDialog: boolean = false;
+  private selectChannel!: Channel;
 
   private created(): void {
-    this.now = moment();
+    this.now = moment().subtract(6, 'hour');
     this.$store.dispatch('fetchSchedule', this.now.clone().subtract(1, 'hour'));
   }
 
@@ -99,41 +101,23 @@ export default class Home extends Vue {
   private toTimeStr(time: Moment): string {
     return time.format('HH:mm');
   }
+
+  private clickChannel(channel: Channel): void {
+    console.log(channel);
+    this.selectChannel = channel;
+    this.visibleDialog = true;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.home {
-  margin-top: 64px;
+.card-date {
+  background-color: #CFD8DC;
+  border-radius: 4px;
+  padding: 8px;
 }
 
 .section {
-  .date {
-    display: block;
-    background-color: gainsboro;
-    border-radius: 8px;
-    margin: 16px 0;
-    padding: 8px 0;
-    font-size: 20px;
-  }
-
-  .time {
-    display: flex;
-    min-height: 100px;
-
-    .at {
-      display: block;
-      position: relative;
-      top: -0.5em;
-      margin: 0 4px;
-    }
-
-    .event-list {
-      display: flex;
-      border-top: solid 2px gray;
-      width: 100%;
-      padding: 2px 0px;
-    }
-  }
+  margin: 8px 0;
 }
 </style>
