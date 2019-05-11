@@ -2,17 +2,23 @@
   <v-layout
     class="card-event"
     row
-    align-end
+    align-center
     justify-center
     :style="cardColor"
   >
     <span class="time caption">{{ timeStr }} ~ </span>
-    <img
-      class="img"
+
+    <div
+      class="channel"
       v-for="channel in channels"
       :key="channel.nameEn"
-      :src="channelImg(channel)"
-    />
+      @click="clickChannel(channel)"
+    >
+      <v-layout align-center justify-center column>
+        <img class="img" :src="channelImg(channel)" />
+        <span>{{ channel.nameJa }}</span>
+      </v-layout>
+    </div>
   </v-layout>
 </template>
 
@@ -36,7 +42,7 @@ export default class EventCard extends Vue {
   }
 
   private channelImg(channel: Channel): string {
-    return require(`@/assets/channel/up/${channel.nameEn}.png`);
+    return require(`@/assets/channel/icon/${channel.nameEn}.jpg`);
   }
 
   private clickChannel(channel: Channel): void {
@@ -46,10 +52,13 @@ export default class EventCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
+$icon-size: 64px;
+$card-height: 100px;
+
 .card-event {
   position: relative;
   border-radius: 4px;
-  min-height: 90px;
+  min-height: $card-height;
   margin: 4px;
 
   .time {
@@ -61,9 +70,15 @@ export default class EventCard extends Vue {
     left: 2px;
   }
 
-  .img {
-    width: 75px;
-    height: 90px;
+  .channel {
+    margin: 4px;
+
+    .img {
+      width: $icon-size;
+      height: $icon-size;
+      border-radius: $icon-size/2;
+      margin-bottom: 4px;
+    }
   }
 }
 </style>
