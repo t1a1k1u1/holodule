@@ -36,7 +36,7 @@ export default class EventCard extends Vue {
   }
 
   private channelImg(channel: Channel): string {
-    return require(`@/assets/${channel.nameEn}.png`);
+    return require(`@/assets/channel/up/${channel.nameEn}.png`);
   }
 
   private clickChannel(channel: Channel): void {
@@ -49,7 +49,7 @@ export default class EventCard extends Vue {
 .card-event {
   position: relative;
   border-radius: 4px;
-  min-height: 64px;
+  min-height: 72px;
   margin: 4px;
 
   .time {
@@ -62,8 +62,8 @@ export default class EventCard extends Vue {
   }
 
   .img {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 72px;
   }
 }
 </style>
