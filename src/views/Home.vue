@@ -18,11 +18,16 @@
         </v-layout>
       </div>
     </v-layout>
+
+    <v-dialog v-model="visibleDialog">
+      <channel-modal :channel="selectChannel" />
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 import EventCard from '@/components/EventCard.vue';
+import ChannelModal from '@/components/ChannelModal.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { map, find, filter } from 'lodash';
 import { Moment } from 'moment';
@@ -43,6 +48,7 @@ interface Channel {
 @Component({
   components: {
     EventCard,
+    ChannelModal,
   },
 })
 export default class Home extends Vue {
@@ -103,7 +109,6 @@ export default class Home extends Vue {
   }
 
   private clickChannel(channel: Channel): void {
-    console.log(channel);
     this.selectChannel = channel;
     this.visibleDialog = true;
   }
