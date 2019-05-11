@@ -7,7 +7,7 @@
       <div class="section">
         <span>{{ toTimeStr(section.time) }}</span>
         <v-divider></v-divider>
-        <v-layout row>
+        <v-layout row wrap>
           <event-card
             v-for     = "(event, index) in section.events"
             :key      = "index"

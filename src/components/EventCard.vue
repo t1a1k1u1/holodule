@@ -49,7 +49,7 @@ export default class EventCard extends Vue {
 .card-event {
   position: relative;
   border-radius: 4px;
-  min-height: 72px;
+  min-height: 90px;
   margin: 4px;
 
   .time {
@@ -62,8 +62,8 @@ export default class EventCard extends Vue {
   }
 
   .img {
-    width: 60px;
-    height: 72px;
+    width: 75px;
+    height: 90px;
   }
 }
 </style>
