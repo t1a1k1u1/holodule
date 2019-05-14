@@ -4,6 +4,8 @@
     </v-img>
     <v-card-title>{{ channel.nameJa }}</v-card-title>
     <v-card-text><span>{{ channel.description }}</span></v-card-text>
+
+    <v-divider></v-divider>
     <v-card-actions>
       <v-layout align-center justify-end>
         <v-btn
