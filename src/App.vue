@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <head>
-      <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
     </head>
     <v-toolbar class="white--text" fixed color="blue">
       <v-toolbar-title>ほろじゅーる！</v-toolbar-title>

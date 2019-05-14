@@ -5,36 +5,32 @@
     <v-card-title>{{ channel.nameJa }}</v-card-title>
     <v-card-text><span>{{ channel.description }}</span></v-card-text>
     <v-card-actions>
-      <v-btn
-        small
-        class="text-none white--text"
-        color="blue lighten-2"
-        :href="channel.twitterUrl"
-        :disabled="!channel.twitterUrl"
-      >
-        <v-icon>mdi-twitter</v-icon>
-        <span>Twitter</span>
-      </v-btn>
-      <v-btn
-        small
-        class="text-none white--text"
-        color="red"
-        :href="channel.youtubeUrl"
-        :disabled="!channel.youtubeUrl"
-      >
-        <v-icon>mdi-youtube</v-icon>
-        <span>YouTube</span>
-      </v-btn>
-      <v-btn
-        small
-        class="text-none white--text"
-        color="blue lighten-2"
-        :href="channel.bilibiliUrl"
-        :disabled="!channel.bilibiliUrl"
-      >
-        <v-icon>mdi-twitter</v-icon>
-        <span>bilibili</span>
-      </v-btn>
+      <v-layout align-center justify-end>
+        <v-btn
+          flat
+          color="blue lighten-2"
+          :href="channel.twitterUrl"
+          :disabled="!channel.twitterUrl"
+        >
+          Twitter
+        </v-btn>
+        <v-btn
+          flat
+          color="red"
+          :href="channel.youtubeUrl"
+          :disabled="!channel.youtubeUrl"
+        >
+          YouTube
+        </v-btn>
+        <v-btn
+          flat
+          color="blue lighten-2"
+          :href="channel.bilibiliUrl"
+          :disabled="!channel.bilibiliUrl"
+        >
+          bilibili
+        </v-btn>
+      </v-layout>
     </v-card-actions>
   </v-card>
 </template>
