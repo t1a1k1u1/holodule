@@ -45,10 +45,6 @@ export default class EventCard extends Vue {
     return {backgroundColor: this.channels[0].color};
   }
 
-  private channelImg(channel: Channel): string {
-    return require(`@/assets/channel/icon/${channel.nameEn}.jpg`);
-  }
-
   private clickChannel(channel: Channel): void {
     this.$emit('clickChannel', channel);
   }
