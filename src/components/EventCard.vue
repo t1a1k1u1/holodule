@@ -15,7 +15,7 @@
       @click="clickChannel(channel)"
     >
       <v-layout align-center justify-center column>
-        <img class="img" :src="channelImg(channel)" />
+        <img class="img" :src="channel.thumbnailUrl" />
         <span>{{ channel.nameJa }}</span>
       </v-layout>
     </div>
@@ -30,6 +30,10 @@ interface Channel {
   nameEn: string;
   color: string;
   mark: string;
+  id: string;
+  description: string;
+  thumbnailUrl: string;
+  bannerUrl: string;
 }
 
 @Component

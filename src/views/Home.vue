@@ -43,6 +43,10 @@ interface Channel {
   nameEn: string;
   color: string;
   mark: string;
+  id: string;
+  description: string;
+  thumbnailUrl: string;
+  bannerUrl: string;
 }
 
 @Component({
