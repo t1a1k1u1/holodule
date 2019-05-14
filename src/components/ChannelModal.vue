@@ -1,9 +1,13 @@
 <template>
   <v-card>
-    <v-img :src="channel.bannerUrl">
-    </v-img>
-    <v-card-title>{{ channel.nameJa }}</v-card-title>
-    <v-card-text><span>{{ channel.description }}</span></v-card-text>
+    <v-img :src="channel.bannerUrl"></v-img>
+    <v-card-text>
+      <span class="title">{{ channel.nameJa }}<br></span>
+      <span>{{ channel.description }}<span class="caption">[1]</span><br></span>
+      <v-layout justify-end>
+        <span class="caption">[1] <a href="https://www.hololive.tv/member">ホロライブ公式</a></span>
+      </v-layout>
+    </v-card-text>
 
     <v-divider></v-divider>
     <v-card-actions>
