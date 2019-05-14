@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <head>
-    </head>
-    <v-toolbar class="white--text" fixed color="blue">
-      <v-toolbar-title>ほろじゅーる！</v-toolbar-title>
-    </v-toolbar>
+    <v-app>
+      <v-toolbar class="white--text" fixed color="blue">
+        <v-toolbar-title>ほろじゅーる！</v-toolbar-title>
+      </v-toolbar>
 
-    <router-view/>
+      <router-view/>
+    </v-app>
   </div>
 </template>
 
