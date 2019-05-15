@@ -62,6 +62,7 @@ export default class Home extends Vue {
 
   private created(): void {
     this.now = moment();
+    this.selectChannel = this.$store.state.channels[0];
     this.$store.dispatch('fetchSchedule', this.now.clone().subtract(1, 'hour'));
   }
 

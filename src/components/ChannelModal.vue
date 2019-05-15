@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-if="!!channel">
     <v-img :src="channel.bannerUrl"></v-img>
     <v-card-text>
       <span class="title">{{ channel.nameJa }}<br></span>
