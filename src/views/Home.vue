@@ -19,7 +19,7 @@
       </div>
     </v-layout>
 
-    <v-dialog v-model="visibleDialog">
+    <v-dialog v-model="visibleDialog" max-width="1060px">
       <channel-modal :channel="selectChannel" />
     </v-dialog>
   </v-container>
