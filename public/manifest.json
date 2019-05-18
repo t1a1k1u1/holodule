@@ -1,6 +1,6 @@
 {
 	"name":				"ホロジュール",
-	"short_name":		"ほろじゅーる",
+	"short_name":		"holodule",
 	"description":		"ホロライブ公式tweetからスケジュール取得して表示する君",
 	"start_url":		"/",
 	"display":			"standalone",
