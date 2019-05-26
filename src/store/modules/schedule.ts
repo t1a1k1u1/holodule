@@ -2,7 +2,7 @@ import { Getters, Mutations, Actions, Module } from 'vuex-smart-module';
 import * as firebase from 'firebase/app';
 import * as moment from 'moment-timezone';
 import 'firebase/firestore';
-import channels from '@/config/channel.json';
+import channels from '@/assets/channel.json';
 
 firebase.initializeApp({
   apiKey:            process.env.VUE_APP_FIREBASE_API_KEY,
@@ -40,7 +40,7 @@ class ScheduleActions extends Actions<
   ScheduleActions
 > {
   private initState(): void {
-    this.commit('setCriterionTime', moment.tz('Asia/Tokyo').subtract('hour', 1).startOf('hour'));
+    this.commit('setCriterionTime', moment.tz('Asia/Tokyo').startOf('hour'));
   }
 
   private searchEvent(time: moment.Moment): void {
