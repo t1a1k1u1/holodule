@@ -9,11 +9,11 @@
         <v-divider></v-divider>
         <v-layout row wrap>
           <event-card
-            v-for     = "(event, index) in section.events"
-            :key      = "index"
-            :timeStr  = "toTimeStr(event.startAt)"
-            :channels = "event.channels"
-            @clickChannel = "clickChannel"
+            v-for="(event, index) in section.events"
+            :key="index"
+            :timeStr="toTimeStr(event.startAt)"
+            :channels="event.channels"
+            @clickChannel="clickChannel"
           />
         </v-layout>
       </div>
@@ -28,11 +28,10 @@
 <script lang="ts">
 import EventCard from '@/components/EventCard.vue';
 import ChannelModal from '@/components/ChannelModal.vue';
+import { Channel, Event } from '@/interfaces';
 import { Component, Vue } from 'vue-property-decorator';
 import { map, find, filter } from 'lodash';
-import { Channel, Schedule } from '@/interfaces';
-import { Moment } from 'moment';
-const moment = require('moment');
+import * as moment from 'moment-timezone';
 
 @Component({
   components: {
@@ -41,34 +40,36 @@ const moment = require('moment');
   },
 })
 export default class Home extends Vue {
-  private now!: Moment;
   private visibleDialog: boolean = false;
   private selectChannel!: Channel;
 
   private created(): void {
-    this.now = moment();
+    this.$store.dispatch('initState');
+    this.$store.dispatch('searchEvent', this.$store.state.criterionTime);
     this.selectChannel = this.$store.state.channels[0];
-    this.$store.dispatch('fetchSchedule', this.now.clone().subtract(1, 'hour'));
   }
 
   get channels(): Channel[] {
     return this.$store.state.channels;
   }
 
-  get schedule(): Schedule[] {
-    return this.$store.state.schedule;
+  get events(): Event[] {
+    return this.$store.state.events;
   }
 
-  get times(): Moment[] {
-    const startOfHour = moment(this.now).startOf('hour');
+  get criterionTime(): moment.Moment {
+    return this.$store.state.criterionTime;
+  }
+
+  get times(): moment.Moment[] {
     return map([...Array(24).keys()], (hour) => {
-      return startOfHour.clone().add(hour, 'hour');
+      return this.criterionTime.clone().add(hour, 'hour');
     });
   }
 
   get timeLine(): object[] {
     return map(this.times, (time) => {
-      const events = filter(this.schedule, (event) => {
+      const events = filter(this.events, (event) => {
         return (time.unix() <= event.start_at.seconds)
           && (event.start_at.seconds < time.clone().add(1, 'hour').unix());
       });
@@ -86,15 +87,15 @@ export default class Home extends Vue {
     });
   }
 
-  private isStartOfDay(time: Moment): boolean {
+  private isStartOfDay(time: moment.Moment): boolean {
     return time.unix() === time.clone().startOf('day').unix();
   }
 
-  private toDateStr(time: Moment): string {
+  private toDateStr(time: moment.Moment): string {
     return time.format('MM月DD日');
   }
 
-  private toTimeStr(time: Moment): string {
+  private toTimeStr(time: moment.Moment): string {
     return time.format('HH:mm');
   }
 

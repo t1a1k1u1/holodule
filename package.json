@@ -10,9 +10,11 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
     "@types/lodash": "^4.14.121",
+    "@types/moment-timezone": "^0.5.12",
     "firebase": "^5.8.3",
     "firebase-admin": "^7.2.0",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.25",
     "register-service-worker": "^1.5.2",
     "vue": "^2.5.22",
     "vue-class-component": "^6.0.0",

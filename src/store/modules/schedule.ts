@@ -1,7 +1,7 @@
 import { Getters, Mutations, Actions, Module } from 'vuex-smart-module';
 import * as firebase from 'firebase/app';
+import * as moment from 'moment-timezone';
 import 'firebase/firestore';
-import { Moment } from 'moment';
 import channels from '@/config/channel.json';
 
 firebase.initializeApp({
@@ -15,7 +15,8 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 class ScheduleState {
-  public schedule: object[] = [];
+  public criterionTime!: moment.Moment;
+  public events: object[] = [];
   public channels: object[] = channels;
 }
 
@@ -23,8 +24,12 @@ class ScheduleGetters extends Getters<ScheduleState> {
 }
 
 class ScheduleMutations extends Mutations<ScheduleState> {
-  public setSchedule(data: object[]) {
-    this.state.schedule = data;
+  public setCriterionTime(payload: moment.Moment) {
+    this.state.criterionTime = payload;
+  }
+
+  public setEvents(payload: object[]) {
+    this.state.events = payload;
   }
 }
 
@@ -34,9 +39,13 @@ class ScheduleActions extends Actions<
   ScheduleMutations,
   ScheduleActions
 > {
-  private fetchSchedule(time: Moment): void {
+  private initState(): void {
+    this.commit('setCriterionTime', moment.tz('Asia/Tokyo').subtract('hour', 1).startOf('hour'));
+  }
+
+  private searchEvent(time: moment.Moment): void {
     db.collection('event')
-      .where('start_at', '>=', time.toDate())
+      .where('start_at', '>=', time.clone().toDate())
       .orderBy('start_at')
       .get()
         .then((querySnapshot) => {
@@ -44,7 +53,7 @@ class ScheduleActions extends Actions<
         querySnapshot.forEach((doc) => {
           docData.push(doc.data());
         });
-        this.commit('setSchedule', docData);
+        this.commit('setEvents', docData);
       });
   }
 }
