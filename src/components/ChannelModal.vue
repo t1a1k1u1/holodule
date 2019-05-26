@@ -43,20 +43,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-
-interface Channel {
-  nameJa: string;
-  nameEn: string;
-  color: string;
-  mark: string;
-  id: string;
-  description: string;
-  thumbnailUrl: string;
-  bannerUrl: string;
-  twitterUrl: string;
-  youtubeUrl: string;
-  bilibiliUrl: string;
-}
+import { Channel } from '@/interfaces';
 
 @Component
 export default class EventCard extends Vue {

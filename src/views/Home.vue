@@ -30,24 +30,9 @@ import EventCard from '@/components/EventCard.vue';
 import ChannelModal from '@/components/ChannelModal.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { map, find, filter } from 'lodash';
+import { Channel, Schedule } from '@/interfaces';
 import { Moment } from 'moment';
 const moment = require('moment');
-
-interface Schedule {
-  start_at: any;
-  channels: object[];
-}
-
-interface Channel {
-  nameJa: string;
-  nameEn: string;
-  color: string;
-  mark: string;
-  id: string;
-  description: string;
-  thumbnailUrl: string;
-  bannerUrl: string;
-}
 
 @Component({
   components: {
