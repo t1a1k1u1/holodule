@@ -1,6 +1,6 @@
 <template>
   <v-card v-if="!!channel">
-    <v-img :src="channel.bannerUrl"></v-img>
+    <v-img :src="banner"></v-img>
     <v-card-text>
       <span class="title">{{ channel.nameJa }}<br></span>
       <span>{{ channel.description }}<span class="caption">[1]</span><br></span>
@@ -48,6 +48,10 @@ import { Channel } from '@/interfaces';
 @Component
 export default class EventCard extends Vue {
   @Prop() private channel!: Channel;
+
+  get banner(): string {
+    return require(`@/assets/img/banner/${ this.channel.nameEn }.jpg`);
+  }
 }
 </script>
 

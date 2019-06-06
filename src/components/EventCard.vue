@@ -15,7 +15,7 @@
       @click="clickChannel(channel)"
     >
       <v-layout align-center justify-center column>
-        <img class="img" :src="channel.thumbnailUrl" />
+        <img class="img" :src="thumbnail(channel)" />
         <span>{{ channel.nameJa }}</span>
       </v-layout>
     </div>
@@ -37,6 +37,10 @@ export default class EventCard extends Vue {
 
   private clickChannel(channel: Channel): void {
     this.$emit('clickChannel', channel);
+  }
+
+  private thumbnail(channel: Channel): string {
+    return require(`@/assets/img/thumbnail/${ channel.nameEn }.jpg`);
   }
 }
 </script>
