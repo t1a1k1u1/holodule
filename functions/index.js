@@ -19,7 +19,7 @@ const twitterClient = new Twitter({
 function getHoloduleTweet(tweets) {
   const holoduleTweet = _.find(tweets, (tweet) => {
     return _.find(tweet.entities.hashtags, (hashtag) => {
-      return hashtag.text === 'ホロジュール';
+      return hashtag.text === 'ホロジュール' && tweet.in_reply_to_status_id === null;
     });
   });
   if (!holoduleTweet) return {};
