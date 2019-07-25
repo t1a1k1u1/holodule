@@ -22,12 +22,17 @@
     <v-dialog v-model="visibleDialog" max-width="1060px">
       <channel-modal :channel="selectChannel" />
     </v-dialog>
+
+    <v-dialog v-model="isLoading" width="300" persistent>
+      <loading-modal />
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 import EventCard from '@/components/EventCard.vue';
 import ChannelModal from '@/components/ChannelModal.vue';
+import LoadingModal from '@/components/LoadingModal.vue';
 import { Channel, Event } from '@/interfaces';
 import { Component, Vue } from 'vue-property-decorator';
 import { map, find, filter } from 'lodash';
@@ -37,16 +42,20 @@ import * as moment from 'moment-timezone';
   components: {
     EventCard,
     ChannelModal,
+    LoadingModal,
   },
 })
 export default class Home extends Vue {
+  private isLoading: boolean = false;
   private visibleDialog: boolean = false;
   private selectChannel!: Channel;
 
-  private created(): void {
+  private async created(): Promise<void> {
+    this.isLoading = true;
     this.$store.dispatch('initState');
-    this.$store.dispatch('searchEvent', this.$store.state.criterionTime);
+    await this.$store.dispatch('searchEvent', this.$store.state.criterionTime);
     this.selectChannel = this.$store.state.channels[0];
+    this.isLoading = false;
   }
 
   get channels(): Channel[] {

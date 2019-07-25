@@ -43,18 +43,16 @@ class ScheduleActions extends Actions<
     this.commit('setCriterionTime', moment.tz('Asia/Tokyo').startOf('hour'));
   }
 
-  private searchEvent(time: moment.Moment): void {
-    db.collection('event')
+  private async searchEvent(time: moment.Moment): Promise<void> {
+    const querySnapshot = await db.collection('event')
       .where('start_at', '>=', time.clone().toDate())
       .orderBy('start_at')
-      .get()
-        .then((querySnapshot) => {
-        const docData: object[] = [];
-        querySnapshot.forEach((doc) => {
-          docData.push(doc.data());
-        });
-        this.commit('setEvents', docData);
-      });
+      .get();
+    const docData: object[] = [];
+    querySnapshot.forEach((doc) => {
+      docData.push(doc.data());
+    });
+    this.commit('setEvents', docData);
   }
 }
 
