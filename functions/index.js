@@ -17,20 +17,22 @@ const twitterClient = new Twitter({
 });
 
 function getHoloduleTweet(tweets) {
-  const holoduleTweet = _.find(tweets, (tweet) => {
-    return _.find(tweet.entities.hashtags, (hashtag) => {
-      return hashtag.text === 'ホロジュール' && tweet.in_reply_to_status_id === null;
-    });
+  const root = _.find(tweets, (tweet) => {
+    return !tweet.in_reply_to_status_id && _.find(tweet.entities.hashtags, {text: 'ホロジュール'});
   });
-  if (!holoduleTweet) return {};
+  if (!root) return {};
 
-  const reply = _.find(tweets, (tweet) => {
-    return tweet.in_reply_to_status_id === holoduleTweet.id;
-  })
-
+  let schedules = [root.full_text];
+  let currentID = root.id;
+  _.sortBy(tweets, ['id']).forEach((tweet) => {
+    if (tweet.in_reply_to_status_id === currentID) {
+      schedules.push(tweet.full_text);
+      currentID = tweet.id;
+    }
+  });
   return {
-    id_str: holoduleTweet.id_str,
-    text  : reply ? _.join([holoduleTweet.full_text, reply.full_text], '\n') : holoduleTweet.full_text
+    id_str: root.id_str,
+    text: _.join(schedules, '\n'),
   };
 }
 
