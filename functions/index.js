@@ -8,6 +8,8 @@ moment.tz.setDefault('Asia/Tokyo');
 
 admin.initializeApp();
 const db = admin.firestore();
+const tweetStatusRef = db.collection('appStatus').doc('tweet');
+const eventsRef = db.collection('event');
 
 const twitterClient = new Twitter({
   consumer_key       : `${functions.config().twitter.consumer.key}`,
@@ -16,121 +18,71 @@ const twitterClient = new Twitter({
   access_token_secret: `${functions.config().twitter.access_token.secret}`,
 });
 
-function getHoloduleTweet(tweets) {
-  const root = _.find(tweets, (tweet) => {
-    return !tweet.in_reply_to_status_id && _.find(tweet.entities.hashtags, {text: 'ホロジュール'});
-  });
-  if (!root) return {};
+let params = {
+  user_id    : '916156645004029952',
+  count      : 20,
+  include_rts: false,
+  tweet_mode : 'extended',
+};
 
-  let schedules = [root.full_text];
-  let currentID = root.id;
-  _.sortBy(tweets, ['id']).forEach((tweet) => {
-    if (tweet.in_reply_to_status_id === currentID) {
-      schedules.push(tweet.full_text);
-      currentID = tweet.id;
-    }
-  });
-  return {
-    id_str: root.id_str,
-    text: _.join(schedules, '\n'),
-  };
-}
-
-async function existTweet(tweet) {
-  const tweetDoc = await db.collection('tweet').doc(tweet.id_str).get();
-  return tweetDoc.exists;
-}
-
-function logTweet(tweet) {
-  console.log(tweet);
-  db.collection('tweet').doc(tweet.id_str).set({
-    tweet_id: Number(tweet.id_str),
-    text    : tweet.text,
-  });
-}
-
-function extractEvent(tweet) {
-  const reDay  = /本日.+(\d{1,2})\/(\d{1,2})/;
-  const reTime = /^(\d{1,2}):(\d{1,2})/;
-  const reName = /アキロゼ|さくらみこ|紫咲シオン|赤井はあと|湊あくあ|ときのそら|白上フブキ|ロボ子さん|百鬼あやめ|大空スバル|大神ミオ|夏色まつり|癒月ちょこ|夜空メル|猫又おかゆ|戌神ころね|兎田ぺこら|潤羽るしあ|星街すいせい|AZKi/g;
-
-  const lines = tweet.text.split(/\r\n|\n/);
-
-  let currentTime;
-  let day;
-  let events = [];
-  lines.forEach(line => {
-    const matched = {
-      day  : line.match(reDay),
-      time : line.match(reTime),
-      names: line.match(reName),
-    };
-
-    if (matched.day) {
-      day = `${matched.day[1]}/${matched.day[2]}`;
-    }
-
-    if (day) {
-      if (matched.time) {
-        if (24 < Number(matched.time[1])) {
-          matched.time[1] = `${(Number(matched.time[1]) -24)}`;
-          currentTime = moment(`${day} ${matched.time[1]}:${matched.time[2]}`, 'MM/DD HH:mm').add(1, 'd');
-        } else {
-          currentTime = moment(`${day} ${matched.time[0]}`, 'MM/DD HH:mm');
-        }
-      }
-
-      if (matched.names) {
-        events.push({
-          time : currentTime,
-          names: matched.names,
-        });
-      }
-    }
-  });
-  return events;
-}
+const members = [
+  "アキロゼ", "さくらみこ", "紫咲シオン", "赤井はあと", "湊あくあ",
+  "ときのそら", "白上フブキ", "ロボ子さん", "百鬼あやめ", "大空スバル",
+  "大神ミオ", "夏色まつり", "癒月ちょこ", "夜空メル", "猫又おかゆ",
+  "星街すいせい", "AZKi", "戌神ころね", "兎田ぺこら", "潤羽るしあ",
+  "白銀ノエル", "宝鐘マリン", "不知火フレア",
+];
 
 exports.setEvent = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
-  const tweets = await twitterClient.get('statuses/user_timeline', {
-    user_id    : '916156645004029952',
-    count      : 20,
-    include_rts: false,
-    tweet_mode : 'extended',
+  const reSchedule = /^(\d{1,2}):(\d{1,2})(.+)/;
+  const reName = new RegExp(_.join(members, '|'), 'g');
+
+  const statusDoc = await tweetStatusRef.get();
+  if (!statusDoc.exists) { console.log('not found tweetStatus'); return res.sendStatus(200); }
+
+  params.since_id = statusDoc.data().recentId;
+  const tweets = await twitterClient.get('statuses/user_timeline', params);
+  if (tweets.length <= 0) { console.log('not found tweets'); return res.sendStatus(200); }
+
+  const recentTweet = tweets[tweets.length - 1];
+  await tweetStatusRef.update({ recentId: recentTweet.id_str });
+
+  let events = [];
+  tweets.forEach(tweet => {
+    const day = moment(tweet.created_at, 'ddd MMM DD HH:mm:ss ZZ YYYY').startOf('day');
+    const lines = tweet.full_text.split(/\r\n|\n/);
+
+    lines.forEach(line => {
+      const matchedSchedule = line.match(reSchedule);
+      if (!matchedSchedule) return;
+
+      const matchedNames = matchedSchedule[3].match(reName);
+      if (!matchedNames) return;
+
+      const time = day.clone().add({
+        hours: Number(matchedSchedule[1]),
+        minutes: Number(matchedSchedule[2]),
+      });
+
+      events.push({ time, names: matchedNames });
+    });
   });
-  const holoduleTweet = getHoloduleTweet(tweets);
-  if (_.isEmpty(holoduleTweet)) {
-    console.log('not found holoduleTweet');
-    return res.sendStatus(200);
-  }
-  if (await existTweet(holoduleTweet)) {
-    return res.sendStatus(200);
-  }
+  if (events.length <= 0) { console.log('not found events'); return res.sendStatus(200); }
 
-  logTweet(holoduleTweet);
-
-  const events = extractEvent(holoduleTweet);
-  if (_.isEmpty(events)) {
-    console.log('not found events');
-    return res.sendStatus(200);
-  }
-
-  const snapshot = await db.collection('event').where('start_at', '>=', events[0].time.toDate()).get();
-  const holodule = [];
-  snapshot.forEach(doc => { holodule.push(doc.data()) });
+  events = _.sortBy(events, ['time']);
+  const snapshot = await eventsRef.where('start_at', '>=', events[0].time.toDate()).get();
+  const existings = [];
+  snapshot.forEach(doc => { existings.push(doc.data()) });
 
   events.forEach(event => {
-    if (
-      !_.find(holodule, (hololive) => {
-        return (hololive.start_at.seconds === event.time.unix())
-          && (_.difference(hololive.channels, event.names).length === 0)
-      })
-    ) {
-      db.collection('event').add({
-        start_at: event.time.toDate(),
-        channels: event.names,
-      });
-    }
+    if (_.find(existings, (existing) => {
+      return (existing.start_at.seconds === event.time.unix()) && (_.difference(existing.channels, event.names).length === 0);
+    })) { return; }
+    eventsRef.add({
+      start_at: event.time.toDate(),
+      channels: event.names,
+    });
   });
+
   return res.sendStatus(200);
 });
